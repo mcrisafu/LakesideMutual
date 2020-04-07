@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: DeploymentConfig
+metadata:
+  annotations:
+    kompose.cmd: C:\openshift-origin-client-tools-v3.11.0-0cbc58b-windows\kompose-windows-amd64.exe
+      convert -f .\docker-compose.yml --provider=openshift -o ./openshift_build
+    kompose.version: 1.21.0 (992df58d8)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: customer-self-service-backend
+  name: customer-self-service-backend
+spec:
+  replicas: 1
+  selector:
+    io.kompose.service: customer-self-service-backend
+  strategy:
+    resources: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: customer-self-service-backend
+    spec:
+      containers:
+      - env:
+        - name: CUSTOMERCORE_BASEURL
+          value: http://customer-core-appuio-demo9506.appuioapp.ch:8110
+        - name: POLICYMANAGEMENT_TCPBROKERBINDADDRESS
+          value: tcp://policy-management-backend-appuio-demo9506.appuioapp.ch:61616
+        - name: SPRING_BOOT_ADMIN_CLIENT_URL
+          value: http://spring-boot-admin-appuio-demo9506.appuioapp.ch:9000
+        image: ' '
+        name: customer-self-service-backend
+        ports:
+        - containerPort: 8080
+        resources: {}
+      restartPolicy: Always
+  test: false
+  triggers:
+  - type: ConfigChange
+  - imageChangeParams:
+      automatic: true
+      containerNames:
+      - customer-self-service-backend
+      from:
+        kind: ImageStreamTag
+        name: customer-self-service-backend:latest
+    type: ImageChange
+status: {}

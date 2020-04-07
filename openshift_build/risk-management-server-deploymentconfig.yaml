@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: DeploymentConfig
+metadata:
+  annotations:
+    kompose.cmd: C:\openshift-origin-client-tools-v3.11.0-0cbc58b-windows\kompose-windows-amd64.exe
+      convert -f .\docker-compose.yml --provider=openshift -o ./openshift_build
+    kompose.version: 1.21.0 (992df58d8)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: risk-management-server
+  name: risk-management-server
+spec:
+  replicas: 1
+  selector:
+    io.kompose.service: risk-management-server
+  strategy:
+    resources: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: risk-management-server
+    spec:
+      containers:
+      - env:
+        - name: ACTIVEMQ_HOST
+          value: policy-management-backend
+        - name: ACTIVEMQ_PORT
+          value: "61613"
+        image: ' '
+        name: risk-management-server
+        ports:
+        - containerPort: 50051
+        resources: {}
+      restartPolicy: Always
+  test: false
+  triggers:
+  - type: ConfigChange
+  - imageChangeParams:
+      automatic: true
+      containerNames:
+      - risk-management-server
+      from:
+        kind: ImageStreamTag
+        name: risk-management-server:latest
+    type: ImageChange
+status: {}

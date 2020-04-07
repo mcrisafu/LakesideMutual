@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ImageStream
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: risk-management-server
+  name: risk-management-server
+spec:
+  tags:
+  - annotations: null
+    from:
+      kind: DockerImage
+      name: registry.appuio.ch/appuio-demo9506/risk-management-server
+    generation: null
+    importPolicy: {}
+    name: latest
+status:
+  dockerImageRepository: ""

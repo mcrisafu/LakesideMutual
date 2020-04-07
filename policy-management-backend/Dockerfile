@@ -10,6 +10,8 @@ COPY --from=build /usr/src/app/target/dependency/BOOT-INF/lib/* /app/lib/
 COPY --from=build /usr/src/app/target/dependency/META-INF /app/META-INF
 COPY --from=build /usr/src/app/target/dependency/BOOT-INF/classes /app
 
+RUN chmod g+rwx /app
+
 EXPOSE 8090
 EXPOSE 61613
 EXPOSE 61616

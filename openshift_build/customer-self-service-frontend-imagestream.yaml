@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ImageStream
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: customer-self-service-frontend
+  name: customer-self-service-frontend
+spec:
+  tags:
+  - annotations: null
+    from:
+      kind: DockerImage
+      name: registry.appuio.ch/appuio-demo9506/customer-self-service-frontend
+    generation: null
+    importPolicy: {}
+    name: latest
+status:
+  dockerImageRepository: ""

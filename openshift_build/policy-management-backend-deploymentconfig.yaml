@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: DeploymentConfig
+metadata:
+  annotations:
+    kompose.cmd: C:\openshift-origin-client-tools-v3.11.0-0cbc58b-windows\kompose-windows-amd64.exe
+      convert -f .\docker-compose.yml --provider=openshift -o ./openshift_build
+    kompose.version: 1.21.0 (992df58d8)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: policy-management-backend
+  name: policy-management-backend
+spec:
+  replicas: 1
+  selector:
+    io.kompose.service: policy-management-backend
+  strategy:
+    resources: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: policy-management-backend
+    spec:
+      containers:
+      - env:
+        - name: CUSTOMERCORE_BASEURL
+          value: http://customer-core-appuio-demo9506.appuioapp.ch:8110
+        - name: SPRING_BOOT_ADMIN_CLIENT_URL
+          value: http://spring-boot-admin-appuio-demo9506.appuioapp.ch:9000
+        image: ' '
+        name: policy-management-backend
+        ports:
+        - containerPort: 8090
+        - containerPort: 61613
+        - containerPort: 61616
+        resources: {}
+      restartPolicy: Always
+  test: false
+  triggers:
+  - type: ConfigChange
+  - imageChangeParams:
+      automatic: true
+      containerNames:
+      - policy-management-backend
+      from:
+        kind: ImageStreamTag
+        name: policy-management-backend:latest
+    type: ImageChange
+status: {}
